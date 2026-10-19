@@ -8,15 +8,11 @@ export function LinkedInButton({ next = "/", label = "Continue with LinkedIn" }:
 
   async function signIn() {
     setLoading(true);
-    // Store the redirect target in sessionStorage so callback can use it
-    if (next !== "/") {
-      sessionStorage.setItem("authNext", next);
-    }
     const supabase = createClient();
     await supabase.auth.signInWithOAuth({
       provider: "linkedin_oidc",
       options: {
-        redirectTo: `${window.location.origin}/`,
+        redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`,
       },
     });
   }

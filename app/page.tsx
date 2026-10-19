@@ -88,7 +88,11 @@ function Landing({ error }: { error?: string }) {
         </ol>
       </div>
       <div>
-        {error && <p className="mb-3 text-center text-sm text-g-red">Sign-in didn&apos;t complete. Please try again.</p>}
+        {error && (
+          <p className="mb-3 text-center text-sm text-g-red">
+            Sign-in didn&apos;t complete{error !== "auth" ? `: ${error}` : ""}. Please try again.
+          </p>
+        )}
         <LinkedInButton />
         <p className="mt-3 text-center text-xs text-muted">GDG DevFest Hyderabad · community project</p>
       </div>
