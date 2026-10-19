@@ -1,11 +1,9 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { safeNext } from "@/lib/safe-next";
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
-  const next = safeNext(searchParams.get("next"));
 
   if (code) {
     const supabase = await createClient();
@@ -20,9 +18,10 @@ export async function GET(request: Request) {
         .eq("id", user!.id)
         .maybeSingle();
       if (!profile?.linkedin_handle) {
-        return NextResponse.redirect(`${origin}/onboarding?next=${encodeURIComponent(next)}`);
+        return NextResponse.redirect(`${origin}/onboarding`);
       }
-      return NextResponse.redirect(`${origin}${next}`);
+      // Check sessionStorage for where to go next (set by LinkedInButton)
+      return NextResponse.redirect(`${origin}/`);
     }
   }
 
